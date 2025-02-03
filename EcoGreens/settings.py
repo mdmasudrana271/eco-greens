@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'categories',
     'plants',
     'orders',
+    'payment',
 ]
 
 MIDDLEWARE = [
