@@ -106,11 +106,11 @@ class UserLoginApiView(APIView):
 class UserDetailsView(APIView):
     
     permission_classes = [IsAuthenticated]
-    def get(self,request, id):
+    def get(self,request, user_id):
     
         try:
             
-            profiles = models.UserProfile.objects.get(id=id)
+            profiles = models.UserProfile.objects.get(user_id=user_id)
             
             user = {
                 'id': profiles.user.id,

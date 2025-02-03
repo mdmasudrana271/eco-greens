@@ -93,16 +93,17 @@
 
       <div class="order-details">
         <p><strong>Order ID:</strong> {{ order.0.id }}</p>
-        <p><strong>Order Date:</strong> {{ order_date }}</p>
-        <p><strong>Total Price:</strong> ${{ total }}</p>
+        <p><strong>Order Date:</strong> {{ order.0.order_date }}</p>
+        <p><strong>Total Price:</strong> ৳{{ total }}</p>
 
         <h5 style="margin-top: 1rem">Order Summary:</h5>
         <ul class="order-items">
           {% for item in order %}
-          <li>
-            <strong>{{ item.name }}</strong> - {{ item.quantity }} x ${{
-            item.price }} = <strong>${{ item.total }}</strong>
-          </li>
+          <strong>{{ item.name }}</strong>
+          - {{ item.quantity }} x ৳{{ item.price }} =
+          <strong>৳{{ item.total }}</strong>
+          <br />
+
           {% endfor %}
         </ul>
       </div>

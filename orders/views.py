@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from . import serializers
 from . import models
 from userprofile.permissions import IsBuyerAndSeller
+from rest_framework.authentication import TokenAuthentication
 from plants.models import Plants
 from django.template.loader import render_to_string
 
@@ -30,7 +31,7 @@ class OrdersViewset(viewsets.ModelViewSet):
 
 class PlaceOrderView(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def post(self, request):
         user = request.user
@@ -72,8 +73,9 @@ class PlaceOrderView(APIView):
                 # Prepare email data
                 email_data.append({
                     'id': order.id,
+                    'order_date': order.order_date.strftime('%Y-%m-%d'),
                     'name': plant.name,
-                    'price': plant.price,
+                    'price': float(plant.price),
                     'quantity': quantity,
                     'total': price
                 })
@@ -88,7 +90,7 @@ class PlaceOrderView(APIView):
         # Send order confirmation email
         self.send_order_email(user.email, email_data, total_price)
 
-        return Response(serializers.OrderSerializer(order).data, status=status.HTTP_201_CREATED)
+        return Response({'message':'Order Place Successfully', 'data':serializers.OrderSerializer(order).data, 'status':'success'})
 
     def send_order_email(self, to_email, email_data, total):
         """
@@ -105,26 +107,23 @@ class PlaceOrderView(APIView):
 
 
 class OrderListView(APIView):
-    permission_classes=[IsBuyerAndSeller]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
-    def get(self,request):       
-         data= models.Order.objects.all().order_by('-order_date')
-                     
-         if self.request.user.userprofile.account_type=='Buyer':
-            res= data.filter(user=self.request.user)
-            serializer=serializers.OrderSerializer(res,many=True)
-            return Response(
-                {
-                    'data':serializer.data,
-                    'messages':'All Order'
-                }
-            ) 
-         else:
-            serializer=serializers.OrderSerializer(data,many=True)
-            return Response(
-                {
-                    'data':serializer.data,
-                    'messages':'All Order'
-                }
-                ) 
+    def get(self, request):       
+        # Get orders only for the authenticated user
+        user_orders = models.Order.objects.filter(user=request.user).order_by('-order_date')
+        
+        # Serialize the orders
+        serializer = serializers.OrderSerializer(user_orders, many=True)
+        
+        return Response({
+            'data': serializer.data,
+            'message': 'User Order History Retrieved Successfully'
+        })
+
+
+
+
+
               

@@ -4,7 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import models
 from . import serializers
+from rest_framework.authentication import TokenAuthentication
+from userprofile.permissions import IsBuyerAndSeller, IsSeller
 # Create your views here.
+
+# from rest_framework.parsers import MultiPartParser, FormParser
 
 
 
@@ -32,6 +36,8 @@ class PlantsByCategory(APIView):
 
 
 class PlantDetail(APIView):
+    permission_classes = [IsBuyerAndSeller]
+    authentication_classes = [TokenAuthentication]
     def get(self, request, id):
         try:
             plant = models.Plants.objects.get(id=id)
@@ -58,11 +64,40 @@ class PlantDetail(APIView):
             return Response({"message": "Plant deleted successfully."})
         except models.Plants.DoesNotExist:
             return Response({"error": "Plant not found."})
+        
+
+
+
+
+class PlantsBySeller(APIView):
+    permission_classes = [IsSeller]
+    authentication_classes = [TokenAuthentication]
+    def get(self, request):
+        user = request.user
+        account_type = user.userprofile.account_type
+
+        if self.request.user.userprofile.account_type=='Seller':
+            try:
+                user_profile = models.UserProfile.objects.get(user__username=user.username)
+                
+                plants = models.Plants.objects.filter(seller=user_profile)
+                serializer = serializers.PlantSerializer(plants, many=True)
+                
+                return Response({"data": serializer.data, "message": f"Plants added by {user.username}"})
+            except models.UserProfile.DoesNotExist:
+                return Response({"error": "Seller with this username does not exist."})
+        else:
+            return Response({"error": "Seller username is required."})
+
 
 
 
 class AddPlantsView(APIView):
+    permission_classes = [IsSeller]
+    authentication_classes = [TokenAuthentication]
+    # parser_classes = [MultiPartParser, FormParser]
     def post(self, request):
+        print(request.user)
         serializer = serializers.PlantSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

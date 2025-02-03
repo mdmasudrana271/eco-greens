@@ -11,4 +11,5 @@ urlpatterns = [
     path('update/<int:id>/', views.PlantDetail.as_view(),name='update_plant'),
     path('all/', views.PlantsByCategory.as_view(),name='all_category'),
     path('details/<int:id>/', views.PlantDetail.as_view(),name='details'),
+    path('plants-by-seller/', views.PlantsBySeller.as_view(), name='plants-by-seller'),
 ]

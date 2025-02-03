@@ -17,13 +17,28 @@ class IsSeller(BasePermission):
 
 
 
+# class IsBuyerAndSeller(BasePermission):
+#     def has_permission(self, request, view):
+#         if not request.user.is_authenticated:
+#             raise PermissionDenied("User is not authenticated. Please log in.")
+         
+#         if_buy=Order.objects.filter(user=request.user)
+#         is_seller=request.user.userprofile.account_type=='Seller'
+#         if if_buy or is_seller:
+#             return True
+
 class IsBuyerAndSeller(BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             raise PermissionDenied("User is not authenticated. Please log in.")
-         
-        if_buy=Order.objects.filter(user=request.user)
-        is_seller=request.user.userprofile.account_type=='Seller'
-        if if_buy or is_seller:
+        
+        # Check if user is either a seller or a buyer with orders
+        is_seller = request.user.userprofile.account_type == 'Seller'
+        has_orders = Order.objects.filter(user=request.user).exists()
+        
+        # Allow if user is a seller or a buyer with orders
+        if is_seller or has_orders:
             return True
+        
+        raise PermissionDenied("User is neither a buyer nor a seller.")
         
