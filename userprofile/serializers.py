@@ -78,20 +78,6 @@ class LoginSerializer(serializers.Serializer):
 
 
 
-# class UpdateUserProfileSerializer(serializers.ModelSerializer):
-#     mobile_no=serializers.CharField(max_length=12)
-#     address=serializers.CharField(max_length=100)
-#     account_type=serializers.ChoiceField(choices=Account_type,required=False,read_only=True)
-
-#     class Meta:
-#         model=User
-#         fields=['username','email','first_name','last_name','mobile_no','address','account_type']
-#         read_only_fields = ['username','account_type']
-    # def update(self, instance, validated_data):
-    #     instance.mobile_no = validated_data.get('mobile_no', instance.mobile_no)
-    #     instance.address = validated_data.get('address', instance.address)
-    #     instance.save()
-    #     return instance
 
 
 class UpdateUserProfileSerializer(serializers.ModelSerializer):

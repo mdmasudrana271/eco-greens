@@ -8,7 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from userprofile.permissions import IsBuyerAndSeller, IsSeller
 # Create your views here.
 
-# from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 
@@ -95,11 +95,11 @@ class PlantsBySeller(APIView):
 class AddPlantsView(APIView):
     permission_classes = [IsSeller]
     authentication_classes = [TokenAuthentication]
-    # parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser]
     def post(self, request):
-        print(request.user)
+        print("Received data:", request.data)
         serializer = serializers.PlantSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(seller=request.user.userprofile)
             return Response({"message": "Plant added successfully.", "data": serializer.data})
         return Response({"error": serializer.errors})

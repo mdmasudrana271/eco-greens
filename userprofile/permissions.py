@@ -17,16 +17,6 @@ class IsSeller(BasePermission):
 
 
 
-# class IsBuyerAndSeller(BasePermission):
-#     def has_permission(self, request, view):
-#         if not request.user.is_authenticated:
-#             raise PermissionDenied("User is not authenticated. Please log in.")
-         
-#         if_buy=Order.objects.filter(user=request.user)
-#         is_seller=request.user.userprofile.account_type=='Seller'
-#         if if_buy or is_seller:
-#             return True
-
 class IsBuyerAndSeller(BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:

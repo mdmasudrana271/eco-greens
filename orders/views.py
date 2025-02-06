@@ -4,9 +4,6 @@ from rest_framework import viewsets,status
 from rest_framework.views import APIView
 from . import serializers
 from . import models
-from userprofile.permissions import IsBuyerAndSeller
-from rest_framework.authentication import TokenAuthentication
-from plants.models import Plants
 from django.template.loader import render_to_string
 
 

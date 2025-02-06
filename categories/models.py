@@ -9,7 +9,7 @@ class Categories(models.Model):
     slug = models.SlugField(max_length=120, unique=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:  # ✅ Auto-generate slug only if it's not provided
+        if not self.slug:  
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
