@@ -95,7 +95,7 @@ class PlantsBySeller(APIView):
 class AddPlantsView(APIView):
     permission_classes = [IsSeller]
     authentication_classes = [TokenAuthentication]
-    parser_classes = [MultiPartParser, FormParser]
+    # parser_classes = [MultiPartParser, FormParser]
     def post(self, request):
         print("Received data:", request.data)
         serializer = serializers.PlantSerializer(data=request.data)

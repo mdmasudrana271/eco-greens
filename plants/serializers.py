@@ -8,7 +8,7 @@ class PlantSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
     seller_name = serializers.SerializerMethodField()
     mobile_no = serializers.SerializerMethodField()
-    category = serializers.PrimaryKeyRelatedField(queryset=models.Categories.objects.all())
+    # category = serializers.PrimaryKeyRelatedField(queryset=models.Categories.objects.all())
     class Meta:
         model = models.Plants
         fields = '__all__'
