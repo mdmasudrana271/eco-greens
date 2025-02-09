@@ -6,6 +6,7 @@ from . import models
 from . import serializers
 from rest_framework.authentication import TokenAuthentication
 from userprofile.permissions import IsBuyerAndSeller, IsSeller
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -102,4 +103,33 @@ class AddPlantsView(APIView):
         if serializer.is_valid():
             serializer.save(seller=request.user.userprofile)
             return Response({"message": "Plant added successfully.", "data": serializer.data})
+        return Response({"error": serializer.errors})
+    
+
+
+
+class BlogViewset(viewsets.ModelViewSet):
+    queryset = models.Blog.objects.all()
+    serializer_class = serializers.BlogSerializer
+
+class BlogView(APIView):
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    def get(self, request, plant_id):
+        if plant_id:
+            blogs = models.Blog.objects.filter(plant__id=plant_id).order_by('-created_at')
+        else:
+            blogs = models.Blog.objects.all()
+
+        serializer = serializers.BlogSerializer(blogs, many=True)
+        return Response({"data": serializer.data})
+    
+
+    def post(self, request):
+        print("Received data:", request.data)
+        serializer = serializers.BlogSerializer(data=request.data)
+        if serializer.is_valid():
+            # serializer.save(author=request.user.userprofile)
+            serializer.save(author=request.user.userprofile)  
+            return Response({"message": "Blog added successfully.", "data": serializer.data})
         return Response({"error": serializer.errors})

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from . models import Plants
+from . models import Plants, Blog
 
 # Register your models here.
 class PlantsAdmin(admin.ModelAdmin):
@@ -15,5 +15,15 @@ class PlantsAdmin(admin.ModelAdmin):
         return None
     
 
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ['title','author_name','created_at']
+
+    def author_name(self, obj):
+        if obj.author:
+            return f"{obj.author.user.username}"
+        return None
+    
+
+admin.site.register(Blog, BlogAdmin)
 
 admin.site.register(Plants,PlantsAdmin)

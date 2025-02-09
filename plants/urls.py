@@ -12,4 +12,6 @@ urlpatterns = [
     path('all/', views.PlantsByCategory.as_view(),name='all_category'),
     path('details/<int:id>/', views.PlantDetail.as_view(),name='details'),
     path('plants-by-seller/', views.PlantsBySeller.as_view(), name='plants-by-seller'),
+    path('blogs/', views.BlogView.as_view(), name='all_blogs'),
+    path('blogs/<int:plant_id>/', views.BlogView.as_view(), name='blogs_by_plant'),
 ]

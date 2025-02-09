@@ -21,3 +21,17 @@ class PlantSerializer(serializers.ModelSerializer):
 
     def get_mobile_no(self, obj):
         return obj.seller.mobile_no if obj.seller else None
+    
+
+
+
+class BlogSerializer(serializers.ModelSerializer):
+    author_name = serializers.SerializerMethodField()
+    class Meta:
+        model = models.Blog
+        fields = '__all__'
+    
+    def get_author_name(self, obj):
+        return obj.author.user.username if obj.author else None
+    
+    

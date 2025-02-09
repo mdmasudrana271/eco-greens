@@ -19,3 +19,18 @@ class Plants(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+
+
+
+
+
+class Blog(models.Model):
+    plant = models.ForeignKey(Plants, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='author',null=True, blank=True)
+    img = models.URLField(max_length=100,null=True, blank=True)
