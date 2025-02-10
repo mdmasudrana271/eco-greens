@@ -26,8 +26,8 @@ def generate_unique_trans_id():
 
 
 class PaymentView(APIView):
-    # permission_classes=[IsAuthenticated]
-    # authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def post(self, request):
         trans_id=generate_unique_trans_id()
         data = request.data
