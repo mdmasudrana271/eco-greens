@@ -31,8 +31,7 @@ class PaymentView(APIView):
     def post(self, request):
         trans_id=generate_unique_trans_id()
         data = request.data
-        print("request data:",request.user)
-        order_id = data['order_id']
+        order_id = data['orderId']
         order =  Order.objects.get(id=order_id)
         order.status = "shipped"
         order.save()
