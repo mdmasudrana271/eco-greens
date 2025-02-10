@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 import uuid
+from orders.models import Order
 # Create your views here.
 import os
 import environ
@@ -25,12 +26,16 @@ def generate_unique_trans_id():
 
 
 class PaymentView(APIView):
-    permission_classes=[IsAuthenticated]
-    authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
+    # authentication_classes=[TokenAuthentication]
     def post(self, request):
         trans_id=generate_unique_trans_id()
         data = request.data
         print("request data:",request.user)
+        order_id = data['order_id']
+        order =  Order.objects.get(id=order_id)
+        order.status = "shipped"
+        order.save()
 
             
         settings = { 'store_id': STORE_ID, 'store_pass': STORE_PASS, 'issandbox': True }
