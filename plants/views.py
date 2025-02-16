@@ -113,8 +113,8 @@ class BlogViewset(viewsets.ModelViewSet):
     serializer_class = serializers.BlogSerializer
 
 class BlogView(APIView):
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def get(self, request, plant_id):
         if plant_id:
             blogs = models.Blog.objects.filter(plant__id=plant_id).order_by('-created_at')
