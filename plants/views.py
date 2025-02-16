@@ -37,7 +37,7 @@ class PlantsByCategory(APIView):
 
 
 class PlantDetail(APIView):
-    permission_classes = [IsBuyerAndSeller]
+    permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     def get(self, request, id):
         try:
