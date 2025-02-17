@@ -31,7 +31,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 
 
 # Application definition
@@ -102,7 +102,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'EcoGreens.wsgi.application'
+WSGI_APPLICATION = 'EcoGreens.wsgi.app'
 
 
 # Database
@@ -175,7 +175,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # additinal added
 # MEDIA_URL = '/media/'
