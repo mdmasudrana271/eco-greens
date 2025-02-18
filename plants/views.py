@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 class PlantsPagination(pagination.PageNumberPagination):
     page_size = 8 # items per page
     page_size_query_param = page_size
-    max_page_size = 100
+    max_page_size = 17
 
 
 
