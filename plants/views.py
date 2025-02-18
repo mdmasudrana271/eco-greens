@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets,pagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import models
@@ -9,16 +9,26 @@ from userprofile.permissions import IsBuyerAndSeller, IsSeller
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
-from rest_framework.parsers import MultiPartParser, FormParser
+
+
+
+# pagination class 
+
+class PlantsPagination(pagination.PageNumberPagination):
+    page_size = 8 # items per page
+    page_size_query_param = page_size
+    max_page_size = 100
 
 
 
 class PlantsViewset(viewsets.ModelViewSet):
     queryset = models.Plants.objects.all()
     serializer_class = serializers.PlantSerializer
+    pagination_class = PlantsPagination
 
 
 class PlantsByCategory(APIView):
+    pagination_class = PlantsPagination
     def get(self, request):
         category = request.query_params.get('category', None)
         # plants = models.Plants.objects.filter(category=category)
@@ -73,6 +83,7 @@ class PlantDetail(APIView):
 class PlantsBySeller(APIView):
     permission_classes = [IsSeller]
     authentication_classes = [TokenAuthentication]
+    pagination_class = PlantsPagination
     def get(self, request):
         user = request.user
         account_type = user.userprofile.account_type
