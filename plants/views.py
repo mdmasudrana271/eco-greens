@@ -88,31 +88,56 @@ class PlantDetail(APIView):
 
 
 
+# class PlantsBySeller(APIView):
+#     permission_classes = [IsSeller]
+#     authentication_classes = [TokenAuthentication]
+#     pagination_class = PlantsPagination
+#     def get(self, request):
+#         user = request.user
+#         account_type = user.userprofile.account_type
+
+#         if self.request.user.userprofile.account_type=='Seller':
+#             try:
+#                 user_profile = models.UserProfile.objects.get(user__username=user.username)
+#                 plants = models.Plants.objects.filter(seller=user_profile)
+#                 # serializer = serializers.PlantSerializer(plants, many=True)
+
+#                 paginator = self.pagination_class()
+#                 paginated_plants = paginator.paginate_queryset(plants, request)
+#                 serializer = serializers.PlantSerializer(paginated_plants, many=True)
+                
+#                 return paginator.get_paginated_response(serializer.data)
+                
+#                 # return Response({"data": serializer.data, "message": f"Plants added by {user.username}"})
+#             except models.UserProfile.DoesNotExist:
+#                 return Response({"error": "Seller with this username does not exist."})
+#         else:
+#             return Response({"error": "Seller username is required."})
+
+
+
 class PlantsBySeller(APIView):
     permission_classes = [IsSeller]
     authentication_classes = [TokenAuthentication]
     pagination_class = PlantsPagination
+
     def get(self, request):
-        user = request.user
-        account_type = user.userprofile.account_type
+        seller_username = request.query_params.get("seller_username")  # Get from request
+        if not seller_username:
+            return Response({"error": "Seller username is required."}, status=400)
 
-        if self.request.user.userprofile.account_type=='Seller':
-            try:
-                user_profile = models.UserProfile.objects.get(user__username=user.username)
-                plants = models.Plants.objects.filter(seller=user_profile)
-                # serializer = serializers.PlantSerializer(plants, many=True)
+        try:
+            user_profile = models.UserProfile.objects.get(user__username=seller_username)
+            plants = models.Plants.objects.filter(seller=user_profile)
 
-                paginator = self.pagination_class()
-                paginated_plants = paginator.paginate_queryset(plants, request)
-                serializer = serializers.PlantSerializer(paginated_plants, many=True)
-                
-                return paginator.get_paginated_response(serializer.data)
-                
-                # return Response({"data": serializer.data, "message": f"Plants added by {user.username}"})
-            except models.UserProfile.DoesNotExist:
-                return Response({"error": "Seller with this username does not exist."})
-        else:
-            return Response({"error": "Seller username is required."})
+            paginator = self.pagination_class()
+            paginated_plants = paginator.paginate_queryset(plants, request)
+            serializer = serializers.PlantSerializer(paginated_plants, many=True)
+
+            return paginator.get_paginated_response(serializer.data)
+
+        except models.UserProfile.DoesNotExist:
+            return Response({"error": "Seller with this username does not exist."}, status=404)
 
 
 
