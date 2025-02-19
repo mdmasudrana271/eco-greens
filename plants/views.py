@@ -115,11 +115,16 @@ class PlantsBySeller(APIView):
         if self.request.user.userprofile.account_type=='Seller':
             try:
                 user_profile = models.UserProfile.objects.get(user__username=user.username)
-                
                 plants = models.Plants.objects.filter(seller=user_profile)
-                serializer = serializers.PlantSerializer(plants, many=True)
+                # serializer = serializers.PlantSerializer(plants, many=True)
+
+                paginator = self.pagination_class()
+                paginated_plants = paginator.paginate_queryset(plants, request)
+                serializer = serializers.PlantSerializer(paginated_plants, many=True)
                 
-                return Response({"data": serializer.data, "message": f"Plants added by {user.username}"})
+                return paginator.get_paginated_response(serializer.data)
+                
+                # return Response({"data": serializer.data, "message": f"Plants added by {user.username}"})
             except models.UserProfile.DoesNotExist:
                 return Response({"error": "Seller with this username does not exist."})
         else:
