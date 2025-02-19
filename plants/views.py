@@ -18,7 +18,7 @@ from .serializers import PlantSerializer
 class PlantsPagination(pagination.PageNumberPagination):
     page_size = 10 # items per page
     page_size_query_param = "page_size"
-    max_page_size = 25
+    max_page_size = 30
 
 
 
