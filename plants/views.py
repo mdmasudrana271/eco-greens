@@ -28,22 +28,6 @@ class PlantsViewset(viewsets.ModelViewSet):
     pagination_class = PlantsPagination
 
 
-# class PlantsByCategory(APIView):
-#     pagination_class = PlantsPagination
-#     def get(self, request):
-#         category = request.query_params.get('category', None)
-
-#         if category:
-#             try:
-#                 plants = models.Plants.objects.filter(category=category)
-#             except models.Plants.DoesNotExist:
-#                 return Response({'message':"Category Not Found"})
-#         else:
-#             plants=models.Plants.objects.all()
-#         serializer=serializers.PlantSerializer(plants, many=True)
-#         return Response({'data':serializer.data,'message':'All Product'}) 
-
-
 
 class PlantsByCategory(APIView):
     pagination_class = PlantsPagination  # Define pagination class
