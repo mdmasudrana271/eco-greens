@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ['https://eco-greens.onrender.com','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://eco-greens.onrender.com','https://eco-greens-client.vercel.app','https://*.127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = [
     "https://eco-greens-client.vercel.app",  # React server
