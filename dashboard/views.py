@@ -15,7 +15,8 @@ class SellerOrderAPIView(APIView):
         seller = request.user.userprofile
         seller_plants = Plants.objects.filter(seller=seller)
         order_ids = OrderItem.objects.filter(plant__in=seller_plants).values_list('order', flat=True)
-        orders = Order.objects.filter(id__in=order_ids)
+        # orders = Order.objects.filter(id__in=order_ids)
+        orders = Order.objects.filter(id__in=order_ids).order_by('-order_date')[:5]
 
   
         serializer = OrderSerializer(orders, many=True)
