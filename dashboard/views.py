@@ -1,15 +1,18 @@
-from rest_framework import viewsets
 from rest_framework.response import Response
 from orders.models import Order, OrderItem, Plants
-from orders.serializers import OrderSerializer, OrderItemSerializer
-from rest_framework.permissions import IsAuthenticated
+from orders.serializers import OrderSerializer
 from rest_framework.views import APIView
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.db.models import Sum
 
+# for authentication
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 class SellerOrderAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     
     def get(self, request):
         seller = request.user.userprofile
@@ -28,6 +31,7 @@ class SellerOrderAPIView(APIView):
 
 class SellerOrderCountAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         seller = request.user.userprofile
@@ -49,6 +53,7 @@ class SellerOrderCountAPIView(APIView):
 
 class TotalProductCountAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         seller = request.user.userprofile
@@ -59,6 +64,7 @@ class TotalProductCountAPIView(APIView):
 
 class RevenueOverTimeAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         seller = request.user.userprofile
@@ -92,6 +98,7 @@ class RevenueOverTimeAPIView(APIView):
 
 class UserOrderDataView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         user = request.user
@@ -114,6 +121,7 @@ class UserOrderDataView(APIView):
 
 class UserOrderCountAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         user = request.user
