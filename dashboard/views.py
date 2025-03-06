@@ -51,15 +51,15 @@ class SellerOrderCountAPIView(APIView):
         })
 
 
-class TotalProductCountAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+# class TotalProductCountAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     authentication_classes = [TokenAuthentication]
 
-    def get(self, request):
-        seller = request.user.userprofile
-        seller_plants = Plants.objects.filter(seller=seller)
-        total_products = seller_plants.count()
-        return Response(total_products)
+#     def get(self, request):
+#         seller = request.user.userprofile
+#         seller_plants = Plants.objects.filter(seller=seller)
+#         total_products = seller_plants.count()
+#         return Response({'total_products': total_products})
 
 
 class RevenueOverTimeAPIView(APIView):
