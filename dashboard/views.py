@@ -19,7 +19,7 @@ class SellerOrderAPIView(APIView):
         seller_plants = Plants.objects.filter(seller=seller)
         order_ids = OrderItem.objects.filter(plant__in=seller_plants).values_list('order', flat=True)
         # orders = Order.objects.filter(id__in=order_ids)
-        orders = Order.objects.filter(id__in=order_ids).order_by('-order_date')[:5]
+        orders = Order.objects.filter(id__in=order_ids,status='pending').order_by('-order_date')
 
   
         serializer = OrderSerializer(orders, many=True)
