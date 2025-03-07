@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 
 class SellerOrderAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    authentication_classes = [TokenAuthentication]
     
     def get(self, request):
         seller = request.user.userprofile
@@ -31,7 +31,7 @@ class SellerOrderAPIView(APIView):
 
 class SellerOrderCountAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         seller = request.user.userprofile
@@ -53,7 +53,7 @@ class SellerOrderCountAPIView(APIView):
 
 class TotalProductCountAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         seller = request.user.userprofile
@@ -64,7 +64,7 @@ class TotalProductCountAPIView(APIView):
 
 class RevenueOverTimeAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         seller = request.user.userprofile
@@ -98,7 +98,7 @@ class RevenueOverTimeAPIView(APIView):
 
 class UserOrderDataView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         user = request.user
@@ -121,7 +121,7 @@ class UserOrderDataView(APIView):
 
 class UserOrderCountAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         user = request.user
