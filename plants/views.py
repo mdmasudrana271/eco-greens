@@ -29,16 +29,27 @@ class PlantsViewset(viewsets.ModelViewSet):
 
 
 
+
+
 class PlantsByCategory(APIView):
     pagination_class = PlantsPagination  # Define pagination class
 
     def get(self, request):
         category = request.query_params.get('category', None)
+        name = request.query_params.get('name', None)
+
+        plants = models.Plants.objects.all()
 
         if category:
-            plants = models.Plants.objects.filter(category=category)
-        else:
-            plants = models.Plants.objects.all()
+            category = category.strip()
+            plants = plants.filter(category__id=category)  # Filter by category ID
+
+        if name:
+            name = name.strip()
+            plants = plants.filter(name__icontains=name)
+
+        # Order the queryset to avoid UnorderedObjectListWarning
+        plants = plants.order_by('created_at')  # Add the ordering here
 
         paginator = self.pagination_class()  # Create paginator instance
         paginated_queryset = paginator.paginate_queryset(plants, request)
@@ -49,6 +60,7 @@ class PlantsByCategory(APIView):
             'data': serializer.data,
             'message': 'All Products'
         })
+
 
 
 
