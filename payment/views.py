@@ -43,9 +43,9 @@ class PaymentView(APIView):
         post_body['total_amount'] = data['totalPrice']
         post_body['currency'] = "BDT"
         post_body['tran_id'] = trans_id
-        post_body['success_url'] = f"https://eco-greens-client.onrender.com/payment/success/{trans_id}"
-        post_body['fail_url'] = "https://eco-greens-client.onrender.com/payment/failed"
-        post_body['cancel_url'] = "https://eco-greens-client.onrender.com/payment/failed"
+        post_body['success_url'] = f"https://eco-greens-client.vercel.app/payment/success/{trans_id}"
+        post_body['fail_url'] = "https://eco-greens-client.vercel.app/payment/failed"
+        post_body['cancel_url'] = "https://eco-greens-client.vercel.app/payment/failed"
         post_body['emi_option'] = 0
         post_body['cus_name'] = request.user.username
         post_body['cus_email'] = request.user.email
@@ -74,10 +74,10 @@ class PaymentView(APIView):
 
 
 @csrf_exempt
-async def paymentSucess(request, trans_id: str):
-    return redirect('https://eco-greens-client.onrender.com/payment/success/{trans_id}')
+def paymentSucess(request, trans_id: str):
+    return redirect(f"https://eco-greens-client.vercel.app/payment/success/{trans_id}")
 
 
 @csrf_exempt
-async def paymentfailed(request):
-    return redirect('https://eco-greens-client.onrender.com/payment/failed')
+def paymentfailed(request):
+    return redirect("https://eco-greens-client.vercel.app/payment/failed")
