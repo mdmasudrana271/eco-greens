@@ -78,7 +78,7 @@ class PaymentView(APIView):
 #     return redirect(f"https://eco-greens-client.vercel.app/payment/success/{trans_id}")
 
 @csrf_exempt
-def paymentSucess(request, trans_id: str):
+async def paymentSucess(request, trans_id: str):
     if request.method == 'GET':
         return render(request, 'payment_success.html', {'trans_id': trans_id})
     else:
@@ -87,5 +87,5 @@ def paymentSucess(request, trans_id: str):
 
 
 @csrf_exempt
-def paymentfailed(request):
+async def paymentfailed(request):
     return redirect("https://eco-greens-client.vercel.app/payment/failed")
