@@ -73,9 +73,17 @@ class PaymentView(APIView):
 
 
 
+# @csrf_exempt
+# def paymentSucess(request, trans_id: str):
+#     return redirect(f"https://eco-greens-client.vercel.app/payment/success/{trans_id}")
+
 @csrf_exempt
 def paymentSucess(request, trans_id: str):
-    return redirect(f"https://eco-greens-client.vercel.app/payment/success/{trans_id}")
+    if request.method == 'GET':
+        return render(request, 'payment_success.html', {'trans_id': trans_id})
+    else:
+        return Response({"error": "Method Not Allowed"}, status=405)
+
 
 
 @csrf_exempt
